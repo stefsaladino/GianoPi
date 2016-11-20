@@ -272,7 +272,7 @@ class GianoPi(object):
         GPIO.cleanup()
         return distance
         
-    def read_adc(self, adcnum):
+    def read_one_ch_from_adc(self, adcnum):
         GPIO.setmode(GPIO.BCM)
         # change these as desired - they're the pins connected from the
         # on the ADC
@@ -323,4 +323,55 @@ class GianoPi(object):
         time.sleep(0.5)
         
         return adcout
+    
+    
+    def get_ground_sensors(self, ground_sensors):
+        
+        GPIO.setmode(GPIO.BCM)
+        # change these as desired - they're the pins connected from the
+        # on the ADC
+        SPICLK = 19 
+        SPIMISO = 20 
+        SPIMOSI = 12 
+        SPICS = 25 
 
+        # set up the SPI interface pins
+        GPIO.setup(SPIMOSI, GPIO.OUT)
+        GPIO.setup(SPIMISO, GPIO.IN)
+        GPIO.setup(SPICLK, GPIO.OUT)
+        GPIO.setup(SPICS, GPIO.OUT)
+
+        for adcnum in range (0,4):
+        
+            GPIO.output(SPICS, True)
+            GPIO.output(SPICLK, False)  # start clock low
+            GPIO.output(SPICS, False)     # bring CS low
+
+            commandout = adcnum
+            commandout |= 0x18  # start bit + single-ended bit
+            commandout <<= 3    # we only need to send 5 bits here
+            for i in range(5):
+                if (commandout & 0x80):
+                    GPIO.output(SPIMOSI, True)
+                else:
+                    GPIO.output(SPIMOSI, False)
+                commandout <<= 1
+                GPIO.output(SPICLK, True)
+                GPIO.output(SPICLK, False)
+
+            adcout = 0
+            # read in one empty bit, one null bit and 10 ADC bits
+            for i in range(12):
+                GPIO.output(SPICLK, True)
+                GPIO.output(SPICLK, False)
+                adcout <<= 1
+                if (GPIO.input(SPIMISO)):
+                        adcout |= 0x1
+
+            GPIO.output(SPICS, True)
+        
+            adcout >>= 1       # first bit is 'null' so drop it
+            ground_sensors[adcnum] = adcout        
+            time.sleep(0.5)
+        
+        return ground_sensors

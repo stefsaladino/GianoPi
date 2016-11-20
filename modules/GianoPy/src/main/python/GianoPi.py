@@ -327,6 +327,8 @@ class GianoPi(object):
     
     def get_ground_sensors(self, ground_sensors):
         
+        # return a list with the first 4 ADC channels, which correspond to the 4 ground proximity sensors
+        
         GPIO.setmode(GPIO.BCM)
         # change these as desired - they're the pins connected from the
         # on the ADC

@@ -68,6 +68,7 @@ ch6_adc = 5;
 ch7_adc = 6;
 ch8_adc = 7;
 
+""" 
 while True:
 
         # read the analog pin
@@ -81,9 +82,10 @@ while True:
         adc_8 = readadc(ch8_adc, SPICLK, SPIMOSI, SPIMISO, SPICS)
 
         
-        print "CH1 ", adc_1, " CH2 (middle)", adc_2, " CH3 ", adc_3, " CH4 alone", adc_4
+        print "CH1 ", adc_1, " CH2 ", adc_2, " CH3 ", adc_3, " CH4 ", adc_4
         print " " 
         
 
         # hang out and do nothing for a half second
         time.sleep(0.5)
+"""

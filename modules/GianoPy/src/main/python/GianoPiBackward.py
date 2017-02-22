@@ -21,7 +21,7 @@ import GianoPi
 M1_TRIM   = 0
 M2_TRIM  = 0
 M3_TRIM = 0
-M4_TRIM = -70
+M4_TRIM = 0
 
 # Create an instance of the robot with the specified trim values.
 # Not shown are other optional parameters:
@@ -40,14 +40,31 @@ gianopirobot = GianoPi.GianoPi(m1_trim=M1_TRIM, m2_trim=M2_TRIM, m3_trim=M3_TRIM
 #                     this amount of seconds the robot will stop.  This parameter
 #                     is optional and if not specified the robot will start moving
 #                     forever.
-SPEED = 150
 
-gianopirobot.forward(SPEED, 0.5)   # Move forward for 1 second.
-gianopirobot.backward(SPEED, 0.5) # Now move backwards
+gianopirobot.forward(150, 1.0)   # Move forward at speed 150 for 1 second.
+gianopirobot.goleft(200, 0.5)      # Spin left at speed 200 for 0.5 seconds.
+gianopirobot.forward(150, 1.0)   # Repeat the same movement 3 times below...
+gianopirobot.goleft(200, 0.5)
+gianopirobot.forward(150, 1.0)
+gianopirobot.goleft(200, 0.5)
+gianopirobot.forward(150, 1.0)
+gianopirobot.goright(200, 0.5)
 
-time.sleep(0.5)
-
-gianopirobot.goleft(SPEED, 0.5)      # go left for 0.5 seconds.
-gianopirobot.goright(SPEED, 0.5)
-
+# Spin in place slowly for a few seconds.
+gianopirobot.goright(100)  # No time is specified so the robot will start spinning forever.
+time.sleep(2.0)   # Pause for a few seconds while the robot spins (you could do
+                  # other processing here though!).
 gianopirobot.stop()      # Stop the robot from moving.
+
+# Now move backwards and spin right a few times.
+gianopirobot.backward(150, 1.0)
+gianopirobot.goright(200, 0.5)
+gianopirobot.backward(150, 1.0)
+gianopirobot.goright(200, 0.5)
+gianopirobot.backward(150, 1.0)
+gianopirobot.goright(200, 0.5)
+gianopirobot.backward(150, 1.0)
+
+# That's it!  Note that on exit the robot will automatically stop moving.
+
+

@@ -78,7 +78,7 @@ class GianoPi(object):
         """
         assert 0 <= speed <= 255, 'Speed must be a value between 0 to 255 inclusive!'
         speed += self._m4_trim
-        speed = max(0, min(255, speed))  # Constrain speed to 0-255 after trimming.
+        speed = max(0, min(255, speed))  # Constrains speed to 0-255 after trimming.
         self._m4.setSpeed(speed)
 
 
@@ -112,8 +112,8 @@ class GianoPi(object):
         # Set motor speed and move both backward.
         self._m2_speed(speed)
         self._m4_speed(speed)
-        self._m2.run(Adafruit_MotorHAT.BACKWARD)
-        self._m4.run(Adafruit_MotorHAT.FORWARD)
+        self._m2.run(Adafruit_MotorHAT.FORWARD)
+        self._m4.run(Adafruit_MotorHAT.BACKWARD)
         # If an amount of time is specified, move for that time and then stop.
         if seconds is not None:
             time.sleep(seconds)
@@ -320,9 +320,62 @@ class GianoPi(object):
         
         adcout >>= 1       # first bit is 'null' so drop it
         
-        time.sleep(0.5)
+        # time.sleep(0.5)
         
         return adcout
+
+    def read_ch1_ch2_from_adc(self, two_adcout):
+      
+         # return a list with the first 4 ADC channels, which correspond to the 4 ground proximity sensors
+        
+        GPIO.setmode(GPIO.BCM)
+        # change these as desired - they're the pins connected from the
+        # on the ADC
+        SPICLK = 19 
+        SPIMISO = 20 
+        SPIMOSI = 12 
+        SPICS = 25 
+
+        # set up the SPI interface pins
+        GPIO.setup(SPIMOSI, GPIO.OUT)
+        GPIO.setup(SPIMISO, GPIO.IN)
+        GPIO.setup(SPICLK, GPIO.OUT)
+        GPIO.setup(SPICS, GPIO.OUT)
+
+        for adcnum in range (1,3):
+        
+            GPIO.output(SPICS, True)
+            GPIO.output(SPICLK, False)  # start clock low
+            GPIO.output(SPICS, False)     # bring CS low
+
+            commandout = adcnum
+            commandout |= 0x18  # start bit + single-ended bit
+            commandout <<= 3    # we only need to send 5 bits here
+            for i in range(5):
+                if (commandout & 0x80):
+                    GPIO.output(SPIMOSI, True)
+                else:
+                    GPIO.output(SPIMOSI, False)
+                commandout <<= 1
+                GPIO.output(SPICLK, True)
+                GPIO.output(SPICLK, False)
+
+            adcout = 0
+            # read in one empty bit, one null bit and 10 ADC bits
+            for i in range(12):
+                GPIO.output(SPICLK, True)
+                GPIO.output(SPICLK, False)
+                adcout <<= 1
+                if (GPIO.input(SPIMISO)):
+                        adcout |= 0x1
+
+            GPIO.output(SPICS, True)
+        
+            adcout >>= 1       # first bit is 'null' so drop it
+            index = adcnum -1
+            two_adcout[index] = adcout        
+            
+        return two_adcout
     
     
     def get_ground_sensors(self, ground_sensors):
@@ -374,6 +427,6 @@ class GianoPi(object):
         
             adcout >>= 1       # first bit is 'null' so drop it
             ground_sensors[adcnum] = adcout        
-            time.sleep(0.5)
+            # time.sleep(0.5)
         
         return ground_sensors

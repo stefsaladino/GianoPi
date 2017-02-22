@@ -29,45 +29,47 @@ MotorFour = mh.getMotor(4)
 # turn on motor
 #MotorOne.run(Adafruit_MotorHAT.RELEASE);
 
-while(True):
-        print "Forward 1&3! "
-        MotorOne.run(Adafruit_MotorHAT.FORWARD);
-        MotorThree.run(Adafruit_MotorHAT.BACKWARD);
-        for i in range(SPEED):
-                MotorOne.setSpeed(SPEED)
-                MotorThree.setSpeed(SPEED)
-                time.sleep(0.01)
+#while(True):
+print "Forward 1&3! "
+MotorOne.run(Adafruit_MotorHAT.FORWARD);
+MotorThree.run(Adafruit_MotorHAT.BACKWARD);
+for i in range(SPEED):
+        MotorOne.setSpeed(SPEED)
+        MotorThree.setSpeed(SPEED)
+        time.sleep(0.01)
                 
-        print "Backward 1&3! "
-        MotorOne.run(Adafruit_MotorHAT.BACKWARD)
-        MotorThree.run(Adafruit_MotorHAT.FORWARD);
-        for i in range(SPEED):
-                MotorOne.setSpeed(SPEED)
-                MotorThree.setSpeed(SPEED) 
-                time.sleep(0.01)
+print "Backward 1&3! "
+MotorOne.run(Adafruit_MotorHAT.BACKWARD)
+MotorThree.run(Adafruit_MotorHAT.FORWARD);
+for i in range(SPEED):
+        MotorOne.setSpeed(SPEED)
+        MotorThree.setSpeed(SPEED) 
+        time.sleep(0.01)
 
-        print "Release 1&3"
-        MotorOne.run(Adafruit_MotorHAT.RELEASE)
-        MotorThree.run(Adafruit_MotorHAT.RELEASE)
-        time.sleep(1.0)
+print "Release 1&3"
+MotorOne.run(Adafruit_MotorHAT.RELEASE)
+MotorThree.run(Adafruit_MotorHAT.RELEASE)
+#time.sleep(1.0)
         
-        print "Forward 2&4! "
-        MotorTwo.run(Adafruit_MotorHAT.FORWARD);
-        MotorFour.run(Adafruit_MotorHAT.BACKWARD);
-        for i in range(SPEED):
-                MotorTwo.setSpeed(SPEED)
-                MotorFour.setSpeed(SPEED)
-                time.sleep(0.01)
+print "Forward 2&4! "
+MotorTwo.run(Adafruit_MotorHAT.FORWARD);
+MotorFour.run(Adafruit_MotorHAT.BACKWARD);
+for i in range(SPEED):
+        MotorTwo.setSpeed(SPEED)
+        MotorFour.setSpeed(SPEED)
+        time.sleep(0.01)
                 
-        print "Backward 2&4! "
-        MotorTwo.run(Adafruit_MotorHAT.BACKWARD)
-        MotorFour.run(Adafruit_MotorHAT.FORWARD);
-        for i in range(SPEED):
-                MotorTwo.setSpeed(SPEED)
-                MotorFour.setSpeed(SPEED) 
-                time.sleep(0.01)
+print "Backward 2&4! "
+MotorTwo.run(Adafruit_MotorHAT.BACKWARD)
+MotorFour.run(Adafruit_MotorHAT.FORWARD);
+for i in range(SPEED):
+        MotorTwo.setSpeed(SPEED)
+        MotorFour.setSpeed(SPEED) 
+        time.sleep(0.01)
 
-        print "Release 2&4"
-        MotorTwo.run(Adafruit_MotorHAT.RELEASE)
-        MotorFour.run(Adafruit_MotorHAT.RELEASE)
-        time.sleep(1.0)
+print "Release 2&4"
+MotorTwo.run(Adafruit_MotorHAT.RELEASE)
+MotorFour.run(Adafruit_MotorHAT.RELEASE)
+#time.sleep(1.0)
+
+

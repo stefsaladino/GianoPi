@@ -12,11 +12,13 @@ import GianoPi
 
 
 gianopirobot = GianoPi.GianoPi()
+groundsensors = [0,0,0,0]
 
 # Now test 4 ground sensors
 
 while(True):
-    four_line_sensors = gianopirobot.get_ground_sensors()
+    four_line_sensors = gianopirobot.get_ground_sensors(groundsensors)
     for i in range (4):
-    print "C[",i,"] = ", four_line_sensors[i]
+        print "C[",i,"] = ", four_line_sensors[i]
  
+GPIO.cleanup()

@@ -1,4 +1,4 @@
-# Simple two DC motor robot class usage example.
+# Simple two DC motor robot class usage example..
 # Author: Tony DiCola (adapted by Stefania Saladino)
 # License: MIT License https://opensource.org/licenses/MIT
 import time

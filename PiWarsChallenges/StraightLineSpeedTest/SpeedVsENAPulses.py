@@ -31,9 +31,9 @@ with open('Encoders1_3.txt', 'r') as csvfile:
 A = array([ x, ones(7)])
 
 
-slope, intercept, r_value, p_value, std_err = stats.linregress(x,average)
-lineAvg = slope*x+intercept
-plt.plot(x,average,'o', x, lineAvg)
+#slope, intercept, r_value, p_value, std_err = stats.linregress(x,average)
+#lineAvg = slope*x+intercept
+#plt.plot(x,average,'o', x, lineAvg)
 
 slopem1, interceptm1, r_valuem1, p_valuem1, std_errm1 = stats.linregress(x,m1)
 linem1 = slopem1*x+interceptm1
@@ -48,17 +48,20 @@ ax = plt.gca()
 ax.set_axis_bgcolor((0.898, 0.898, 0.898))
 fig = plt.gcf()
 
-plt.plot(x,average, 'ro')
+#plt.plot(x,average, 'ro')
 plt.xlabel('speed')
 plt.ylabel('# of ENA pulses')
 
-my_legend = "average = "+ str(intercept)+ " + "+ str(slope)+ "*x, " +" std_err = "+str(std_err)
+my_legend = "m1 = "+ str(interceptm1)+ " + "+ str(slopem1)+ "*x, " +" std_err = "+str(std_errm1)
 #plt.legend(my_legend)
 plt.title(my_legend)
+my_legend3 = "m3 = "+ str(interceptm3)+ " + "+ str(slopem3)+ "*x, " +" std_err = "+str(std_errm3)
+#plt.legend(my_legend)
+plt.title(my_legend3)
 plt.show()
 #y.plot_mpl(fig, filename='linear-Fit-with-matplotlib')
 
-print "intercept avg", intercept, " slopeavg ", slope
+#print "intercept avg", intercept, " slopeavg ", slope
 print "intercept m1", interceptm1, " slopem1 ", slopem1
 print "intercept m3", interceptm3, " slopem3 ", slopem3
   

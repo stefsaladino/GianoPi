@@ -29,55 +29,53 @@ atexit.register(turnOffMotors)
 ################################# 
 maxspeed = 255 #maximum speed 
 
-MotorOne = mh.getMotor(1)
-MotorThree = mh.getMotor(3)
+MotorTwo = mh.getMotor(2)
+MotorFour = mh.getMotor(4)
 
-M1_ENA_PIN = 4
-#M1_ENB_PIN = 25
+M2_ENA_PIN = 22
 
-M3_ENA_PIN = 6
-#M3_ENB_PIN = 13
+M4_ENA_PIN = 16
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(M1_ENA_PIN, GPIO.IN)
-GPIO.setup(M3_ENA_PIN, GPIO.IN)
+GPIO.setup(M2_ENA_PIN, GPIO.IN)
+GPIO.setup(M4_ENA_PIN, GPIO.IN)
 
-global c_M1A, c_M3A
-c_M1A = 0
-c_M3A = 0
+global c_M2A, c_M4A
+c_M2A = 0
+c_M4A = 0
 
-def increase_c_M1A(channel):
-    global c_M1A
-    c_M1A += 1
-def increase_c_M3A(channel):
-    global c_M3A
-    c_M3A += 1
+def increase_c_M2A(channel):
+    global c_M2A
+    c_M2A += 1
+def increase_c_M4A(channel):
+    global c_M4A
+    c_M4A += 1
 
 # to count pulses on the encoders
-GPIO.add_event_detect(M1_ENA_PIN, GPIO.RISING, callback=increase_c_M1A)
-GPIO.add_event_detect(M3_ENA_PIN, GPIO.RISING, callback=increase_c_M3A)
+GPIO.add_event_detect(M2_ENA_PIN, GPIO.RISING, callback=increase_c_M2A)
+GPIO.add_event_detect(M4_ENA_PIN, GPIO.RISING, callback=increase_c_M4A)
 
-MotorOne.run(Adafruit_MotorHAT.FORWARD) #M1
-MotorThree.run(Adafruit_MotorHAT.BACKWARD) #M4
+MotorTwo.run(Adafruit_MotorHAT.FORWARD) #M1
+MotorFour.run(Adafruit_MotorHAT.BACKWARD) #M4
 
-logfile = 'Encoders1_3.txt' # to keep a record of number of pulses for each motor
-x_speed1 = maxspeed
-x_speed3 = maxspeed
+logfile = 'Encoders2_4.txt' # to keep a record of number of pulses for each motor
+x_speed2 = maxspeed
+x_speed4 = maxspeed
 
 while(True) :
 
-	c_M1A = 0
-	c_M3A = 0
+	c_M2A = 0
+	c_M4A = 0
 	
 	NumSecs = 0.5
 
-	MotorOne.setSpeed(max(0, min(maxspeed, int(x_speed1)))) #M1
-	MotorThree.setSpeed(max(0, min(maxspeed, int(x_speed3)))) #M3
+	MotorTwo.setSpeed(max(0, min(maxspeed, int(x_speed2)))) #M1
+	MotorFour.setSpeed(max(0, min(maxspeed, int(x_speed4)))) #M3
 	time.sleep(NumSecs)
 	
 	#the slope has nbeen calculated over the number of pulses counted on 1 sec
-	temp_c_M1A = c_M1A/NumSecs 
-	temp_c_M3A = c_M3A/NumSecs 
+	temp_c_M2A = c_M2A/NumSecs 
+	temp_c_M4A = c_M4A/NumSecs 
 		
 	"""
 	the following needs to  be done once.... see SpeedVsENAPulses.py
@@ -89,7 +87,7 @@ while(True) :
 	x1 = x2 + diff_Y/Slope
 	"""
 	
-	str_EnablesA =str(time.time())+ str(maxspeed)+", "+str(temp_c_M1A)+", "+str(temp_c_M3A)
+	str_EnablesA =str(time.time())+ str(maxspeed)+", "+str(temp_c_M2A)+", "+str(temp_c_M4A)
 	f = open(logfile, 'a')
 	f.write((str_EnablesA + '\n'))			# the value
 	#f.write((str(datetime.datetime.now())+ '\n'))	# timestamp
@@ -97,8 +95,8 @@ while(True) :
 		
 	
 	#StdErr =  from analysis on plotly - 
-	m1_Slope = 9.52 #m1
-	m3_Slope = 9.78 #m2
+	m2_Slope = 9.5 #guess
+	m4_Slope = 9.5 #guess
 	
 	#Intercept = from analysis on plotly -
 	#rpm_from_fit = Intercept + Slope*k
@@ -106,26 +104,26 @@ while(True) :
 	MaxDiff = 1 # maximum admitted diff between number of pulses (calculated from the error)
 		       
 	#average_rpm = 346 # depending on the speed, see EncodersA.txt for the actual value, averaged over 4 motors for 1 sec
-	reference = min(temp_c_M1A, temp_c_M3A) # the one which go faster is the one that can be slowed down..., so the reference is the slowest!
-	diff_M1A = temp_c_M1A - reference
-	diff_M3A = temp_c_M3A - reference
+	reference = min(temp_c_M2A, temp_c_M4A) # the one which go faster is the one that can be slowed down..., so the reference is the slowest!
+	diff_M2A = temp_c_M2A - reference
+	diff_M4A = temp_c_M4A - reference
 	
 
-	f = open("GoStraight1_3.txt", 'a')
+	f = open("GoStraight2_4.txt", 'a')
 	
-	if (diff_M1A  >= MaxDiff) : 
-		x_speed1 = maxspeed - diff_M1A/m1_Slope
-		x_speed1 = max(0, min(255, x_speed1)) 
-		MotorOne.setSpeed(int(x_speed1))
+	if (diff_M2A  >= MaxDiff) : 
+		x_speed2 = maxspeed - diff_M2A/m2_Slope
+		x_speed2 = max(0, min(255, x_speed2)) 
+		MotorTwo.setSpeed(int(x_speed2))
 
-		frase = str(time.time())+"M1 "+str(temp_c_M1A) +" - M3 " +str(reference)+" = " +str(diff_M1A)+", speed "+str(maxspeed)+", M1 set at "+str(x_speed1)
+		frase = str(time.time())+"M2 "+str(temp_c_M2A) +" - M4 " +str(reference)+" = " +str(diff_M2A)+", speed "+str(maxspeed)+", M2 set at "+str(x_speed2)
 		f.write(frase+ '\n')
 
-	if (diff_M3A >= MaxDiff) : 
-		x_speed3 = maxspeed - diff_M3A/m3_Slope
-		x_speed3 = max(0, min(255, x_speed3)) 
-		MotorThree.setSpeed(int(x_speed3))
-		frase = str(time.time())+"M3 "+str(temp_c_M3A) +" - M1 " +str(reference)+" = " +str(diff_M3A)+", speed "+str(maxspeed)+", M3 set at "+str(x_speed3)
+	if (diff_M4A >= MaxDiff) : 
+		x_speed4 = maxspeed - diff_M4A/m4_Slope
+		x_speed4 = max(0, min(255, x_speed4)) 
+		MotorFour.setSpeed(int(x_speed4))
+		frase = str(time.time())+"M4 "+str(temp_c_M4A) +" - M2 " +str(reference)+" = " +str(diff_M4A)+", speed "+str(maxspeed)+", M4 set at "+str(x_speed4)
 		f.write(frase+ '\n')
 
 

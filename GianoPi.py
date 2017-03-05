@@ -88,6 +88,16 @@ class GianoPi(object):
         self._m2.run(Adafruit_MotorHAT.RELEASE)
         self._m3.run(Adafruit_MotorHAT.RELEASE)
         self._m4.run(Adafruit_MotorHAT.RELEASE)
+    
+    def stop_1_3(self):
+        """Stop all movement."""
+        self._m1.run(Adafruit_MotorHAT.RELEASE)
+        self._m3.run(Adafruit_MotorHAT.RELEASE)
+        
+    def stop_2_4(self):
+        """Stop all movement."""
+        self._m2.run(Adafruit_MotorHAT.RELEASE)
+        self._m4.run(Adafruit_MotorHAT.RELEASE)
 
     def forward(self, speed, seconds=None):
         """Move forward at the specified speed (0-255).  Will start moving

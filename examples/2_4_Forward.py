@@ -30,18 +30,10 @@ MotorFour = mh.getMotor(4)
 
 print "Forward 2&4! "
 MotorTwo.run(Adafruit_MotorHAT.FORWARD);
-MotorFour.run(Adafruit_MotorHAT.FORWARD);
+MotorFour.run(Adafruit_MotorHAT.BACKWARD);
 for i in range(SPEED):
         MotorTwo.setSpeed(SPEED)
-        MotorFour
-
-
-
-
-
-
-
-        .setSpeed(SPEED)
+        MotorFour.setSpeed(SPEED)
         time.sleep(0.01)
                 
 print "Release 2&4"

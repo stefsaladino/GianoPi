@@ -21,7 +21,7 @@ def turnOffMotors():
     mh.getMotor(2).run(Adafruit_MotorHAT.RELEASE)
     mh.getMotor(3).run(Adafruit_MotorHAT.RELEASE)
     mh.getMotor(4).run(Adafruit_MotorHAT.RELEASE)
-    GPIO.cleanup()
+   
 
 
 atexit.register(turnOffMotors)
@@ -76,40 +76,30 @@ def increase_c_M3A(channel):
 def increase_c_M4A(channel):
     global c_M4A
     c_M4A += 1.
+#GPIO.add_event_detect(M1_ENA_PIN, GPIO.RISING, callback=increase_c_M1A)
+#GPIO.add_event_detect(M2_ENA_PIN, GPIO.RISING, callback=increase_c_M2A)
+#GPIO.add_event_detect(M3_ENA_PIN, GPIO.RISING, callback=increase_c_M3A)
+#GPIO.add_event_detect(M4_ENA_PIN, GPIO.RISING, callback=increase_c_M4A)
 
-GPIO.add_event_detect(M1_ENA_PIN, GPIO.RISING, callback=increase_c_M1A)
-GPIO.add_event_detect(M2_ENA_PIN, GPIO.RISING, callback=increase_c_M2A)
-GPIO.add_event_detect(M3_ENA_PIN, GPIO.RISING, callback=increase_c_M3A)
-GPIO.add_event_detect(M4_ENA_PIN, GPIO.RISING, callback=increase_c_M4A)
+#logfile = 'HoloEncodersA.txt'
+NumSecs = 1
+speed = 140
 
-logfile = 'HoloEncodersAnalysis.txt'
-NumSecs = 1.
-start = time.time()
-After10sec = time.time()
+#while(True):
+FL.setSpeed(int(speed)) #M1
+FR.setSpeed(int(speed)) #M2
+RL.setSpeed(int(speed)) #M4
+RR.setSpeed(int(speed)) #M3
+time.sleep(NumSecs)
+turnOffMotors()
+FL.run(Adafruit_MotorHAT.BACKWARD) #M1
+FR.run(Adafruit_MotorHAT.FORWARD) #M2
+RL.run(Adafruit_MotorHAT.BACKWARD) #M4
+RR.run(Adafruit_MotorHAT.FORWARD) #M3
+FL.setSpeed(int(speed)) #M1
+FR.setSpeed(int(speed)) #M2
+RL.setSpeed(int(speed)) #M4
+RR.setSpeed(int(speed)) #M3
+time.sleep(NumSecs)
+turnOffMotors()
 
-while((After10sec - start) <= 5):
-
-	FL.setSpeed(maxspeed)
-	FR.setSpeed(maxspeed)
-	RL.setSpeed(maxspeed)
-	RR.setSpeed(maxspeed)
-	time.sleep(NumSecs)
-
-	c_M1A = c_M1A/NumSecs
-	c_M2A = c_M2A/NumSecs
-	c_M3A = c_M3A/NumSecs
-	c_M4A = c_M4A/NumSecs
-	
-	average_rpm = (c_M1A + c_M2A+c_M3A + c_M4A)/4.
-			
-	str_EnablesA =str(average_rpm)+", "+str(c_M1A)+", "+str(c_M2A)+", "+str(c_M3A)+", "+str(c_M4A)
-	f = open(logfile, 'a')
-	f.write((str_EnablesA + '\n'))			# the value
-	#f.write((str(datetime.datetime.now())+ '\n'))	# timestamp
-	f.close()	
-		       
-	c_M1A = 0.
-	c_M2A = 0.
-	c_M3A = 0.
-	c_M4A = 0.
-	After10Sec = time.time()

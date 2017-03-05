@@ -6,7 +6,7 @@ import atexit
 
 # create a default object, no changes to I2C address or frequency
 mh = Adafruit_MotorHAT(addr=0x60)
-SPEED = 255
+SPEED = 100
 
 
 # recommended for auto-disabling motors on shutdown!

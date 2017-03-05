@@ -73,30 +73,3 @@ fig['layout'].update(height=600, width=600,
                      title='Four Motors at same Max Speed of 255')
 plot_url = py.plot(fig, filename='multiple-subplots-shared-yaxes')
 
-"""
-plt.plot(average,'o')
-plt.legend('avg')
-#plt.show()
-plt.plot(fl,'o')
-plt.legend('fl')
-#plt.show()
-plt.plot(fr,'o')
-plt.legend('fr')
-#plt.show()
-plt.plot(rl,'o')
-plt.legend('rl')
-#plt.show()
-plt.plot(rr,'o')
-plt.legend('rr')
-#plt.show()
-
-pylab.title('Motors at 255')
-ax = plt.gca()
-ax.set_axis_bgcolor((0.898, 0.898, 0.898))
-fig = plt.gcf()
-
-plt.xlabel('Pulse Count')
-plt.ylabel('Frequency')
-plt.show()
-#print "intercept avg", intercept, " slopeavg ", slope
-"""

@@ -5,7 +5,7 @@ import atexit
 fpsClock = pygame.time.Clock()
 
 fps = 5
-maxspeed = 255*0.7 #maxspeed divided by sqrt of 2
+maxspeed = 210 #maxspeed divided by sqrt of 2
 
 pygame.init()
 pygame.joystick.init()
@@ -21,23 +21,27 @@ try:
 except pygame.error:
     print 'joystick not found.'
 
-#window = pygame.display.set_mode((320, 240))
-#pygame.display.set_caption('Sprite and Joy test')
+
 
 # Main loop
 while True:
     joyx,joyy = int(joy.get_axis(0)*maxspeed), int(joy.get_axis(1)*maxspeed)
     #print 'joyx : ' + str(joyx) +', joyy  '+ str(joyy) +' time: '+ str(datetime.datetime.now())
     if(joyy<0):
-        gianopirobot.forward(abs(joyy), 0.18)
-    if (joyy>0):
-        gianopirobot.backward(abs(joyy), 0.18)
+        gianopirobot.forward(abs(joyy))
+    elif (joyy>0):
+        gianopirobot.backward(abs(joyy))
+    elif (joyy==0):
+        gianopirobot.stop_2_4()
+        
     if( joyx >0):
-        gianopirobot.goleft(abs(joyx),0.18)
-    if(joyx<0):
-        gianopirobot.goright(abs(joyx), 0.18)
-   # if((joyy==0)&(joyx==0)):
-   #     gianopirobot.stop()
+        gianopirobot.goleft(abs(joyx))
+    elif(joyx<0):
+        gianopirobot.goright(abs(joyx))
+    elif(joyx==0):
+        gianopirobot.stop_1_3()
+        
+ 
 
     for event in pygame.event.get():
         if event.type == QUIT:

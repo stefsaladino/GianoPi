@@ -1,7 +1,10 @@
-import GianoPi
+
+import sys, os
 import time
 import atexit
 import RPi.GPIO as GPIO
+sys.path.insert(1, os.path.join(sys.path[0], '../..'))
+import GianoPi
 
 M1_TRIM = 0
 M2_TRIM = 0

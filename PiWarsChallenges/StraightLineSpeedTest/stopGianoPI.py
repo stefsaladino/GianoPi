@@ -1,4 +1,5 @@
 import time
+sys.path.insert(1, os.path.join(sys.path[0], '../..'))
 import GianoPi
 
 

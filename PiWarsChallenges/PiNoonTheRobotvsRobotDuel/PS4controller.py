@@ -9,7 +9,7 @@ import atexit
 fpsClock = pygame.time.Clock()
 
 fps = 5
-maxspeed = 210 #maxspeed divided by sqrt of 2
+maxspeed = 255 #maxspeed divided by sqrt of 2
 
 pygame.init()
 pygame.joystick.init()

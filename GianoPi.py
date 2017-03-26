@@ -99,14 +99,14 @@ class GianoPi(object):
         self._m2.run(Adafruit_MotorHAT.RELEASE)
         self._m4.run(Adafruit_MotorHAT.RELEASE)
 
-    def forward(self, speed, seconds=None):
+    def forward(self, speed2, speed4, seconds=None):
         """Move forward at the specified speed (0-255).  Will start moving
         forward and return unless a seconds value is specified, in which
         case the robot will move forward for that amount of time and then stop.
         """
         # Set motor speed and move both forward.
-        self._m2_speed(speed)
-        self._m4_speed(speed)
+        self._m2_speed(speed2)
+        self._m4_speed(speed4)
         self._m2.run(Adafruit_MotorHAT.BACKWARD)
         self._m4.run(Adafruit_MotorHAT.FORWARD)
         # If an amount of time is specified, move for that time and then stop.
@@ -129,14 +129,14 @@ class GianoPi(object):
             time.sleep(seconds)
             self.stop()
             
-    def goleft(self, speed, seconds=None):
+    def goleft(self, speed1, speed3, seconds=None):
         """Move to the left at the specified speed (0-255).  Will start moving
         left and return unless a seconds value is specified, in which
         case the robot will move left for that amount of time and then stop.
         """
         # Set motor speed and move both forward.
-        self._m1_speed(speed)
-        self._m3_speed(speed)
+        self._m1_speed(speed1)
+        self._m3_speed(speed3)
         self._m1.run(Adafruit_MotorHAT.FORWARD)
         self._m3.run(Adafruit_MotorHAT.BACKWARD)
         # If an amount of time is specified, move for that time and then stop.
@@ -144,14 +144,14 @@ class GianoPi(object):
             time.sleep(seconds)
             self.stop()
 
-    def goright(self, speed, seconds=None):
+    def goright(self, speed1, speed3, seconds=None):
         """Move to the right at the specified speed (0-255).  Will start moving
         right and return unless a seconds value is specified, in which
         case the robot will move right for that amount of time and then stop.
         """
         # Set motor speed and move both forward.
-        self._m1_speed(speed)
-        self._m3_speed(speed)
+        self._m1_speed(speed1)
+        self._m3_speed(speed3)
         self._m1.run(Adafruit_MotorHAT.BACKWARD)
         self._m3.run(Adafruit_MotorHAT.FORWARD)
         # If an amount of time is specified, move for that time and then stop.
@@ -223,8 +223,8 @@ class GianoPi(object):
     def get_rightobjectdistance(self, distance=1):
 
         GPIO.setmode(GPIO.BCM)
-        TRIG = 23
-        ECHO = 24
+        TRIG = 5
+        ECHO = 13
 
         # print "Distance Measurement In Progress"
         GPIO.setup(TRIG,GPIO.OUT)
@@ -232,7 +232,7 @@ class GianoPi(object):
 
         GPIO.output(TRIG, False)
         # print "Waiting For Sensor To Settle"
-        time.sleep(0.5)
+        time.sleep(0.02)
 
         GPIO.output(TRIG, True)
         time.sleep(0.00001)
@@ -251,7 +251,7 @@ class GianoPi(object):
         GPIO.cleanup()
         return distance
         
-    def get_leftobjectdistance(self, distance=1):
+    def get_FrontObjectDistance(self, distance=1):
 
         GPIO.setmode(GPIO.BCM)
         TRIG = 17
@@ -263,7 +263,7 @@ class GianoPi(object):
 
         GPIO.output(TRIG, False)
         # print "Waiting For Sensor To Settle"
-        time.sleep(0.5)
+        time.sleep(0.02)
 
         GPIO.output(TRIG, True)
         time.sleep(0.00001)
@@ -278,7 +278,7 @@ class GianoPi(object):
         pulse_duration = pulse_end - pulse_start
         distance = pulse_duration * 17150
         distance = round(distance, 2)
-        # print "Distance:",distance,"cm"
+        #print "Distance:",distance,"cm"
         GPIO.cleanup()
         return distance
         
@@ -440,3 +440,10 @@ class GianoPi(object):
             # time.sleep(0.5)
         
         return ground_sensors
+
+    def turnby(degrees):
+        calibrate = 100
+        if (degrees < 0):
+            this.turnleft_m2_m4(calibrate)
+        else:
+            this.turnright_m2_m4(calibrate)

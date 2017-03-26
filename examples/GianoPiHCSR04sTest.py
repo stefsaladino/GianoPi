@@ -20,5 +20,5 @@ gianopirobot = GianoPi.GianoPi()
 while(True):
     rightdis = gianopirobot.get_rightobjectdistance()
     print "Object detected at RIGHT! Distance:",rightdis,"cm"
-    leftdis = gianopirobot.get_leftobjectdistance()
-    print "Objetb detected at LEFT! Distance:",leftdis,"cm"
+    frontdis = gianopirobot.get_fronttobjectdistance()
+    print "Objetb detected in front! Distance:",frontdis,"cm"

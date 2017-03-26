@@ -55,8 +55,8 @@ def increase_c_M4A(channel):
 GPIO.add_event_detect(M2_ENA_PIN, GPIO.RISING, callback=increase_c_M2A)
 GPIO.add_event_detect(M4_ENA_PIN, GPIO.RISING, callback=increase_c_M4A)
 
-MotorTwo.run(Adafruit_MotorHAT.FORWARD) #M1
-MotorFour.run(Adafruit_MotorHAT.BACKWARD) #M4
+MotorTwo.run(Adafruit_MotorHAT.BACKWARD) #M2
+MotorFour.run(Adafruit_MotorHAT.FORWARD) #M4
 
 logfile = 'Encoders2_4.txt' # to keep a record of number of pulses for each motor
 x_speed2 = maxspeed

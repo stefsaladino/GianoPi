@@ -9,11 +9,11 @@ M4_TRIM = 0
 gianopirobot = GianoPi.GianoPi(m1_trim=-10, m2_trim=M2_TRIM, m3_trim=M3_TRIM, m4_trim=M4_TRIM)
 
 
-distance = gianopirobot.get_leftobjectdistance()
+distance = gianopirobot.get_rightobjectdistance()
 
 while (distance >200):
     print distance
     gianopirobot.goright(50)
-    distance = gianopirobot.get_leftobjectdistance()
+    distance = gianopirobot.get_rightobjectdistance()
 
 gianopirobot.stop()

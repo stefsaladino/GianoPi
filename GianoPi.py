@@ -441,9 +441,37 @@ class GianoPi(object):
         
         return ground_sensors
 
-    def turnby(degrees):
-        calibrate = 100
+    def turnleftall(self, speed, seconds=None):
+        """Spin to the left at the specified speed using m2 and m4.  Will start spinning and
+        return unless a seconds value is specified, in which case the robot will
+        spin for that amount of time and then stop.
+        """
+        # Set motor speed and move both forward.
+        self._m2_speed(speed)
+        self._m1_speed(speed)
+        self._m4_speed(speed)
+        self._m3_speed(speed)
+        self._m2.run(Adafruit_MotorHAT.FORWARD)
+        self._m1.run(Adafruit_MotorHAT.FORWARD)
+        self._m4.run(Adafruit_MotorHAT.FORWARD)
+        self._m3.run(Adafruit_MotorHAT.FORWARD)
+        # If an amount of time is specified, move for that time and then stop.
+        if seconds is not None:
+            time.sleep(seconds)
+            self.stop()
+        
+
+    def turnby(self, degrees):
+
+        timeFor1Degree = 1.4/360
+
+        calibrate = 95
         if (degrees < 0):
-            this.turnleft_m2_m4(calibrate)
+            self.turnleftall(calibrate, 1.4)
         else:
-            this.turnright_m2_m4(calibrate)
+            self.turnleftall(calibrate, 1.4)
+
+
+
+
+

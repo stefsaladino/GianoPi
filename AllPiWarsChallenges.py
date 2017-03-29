@@ -5,10 +5,10 @@ import atexit
 import colorsys
 import time
 import numpy as np
+import colorsys
+import time
 
 from blinkt import set_clear_on_exit, set_pixel, show, set_brightness
-
-
 
 
 fpsClock = pygame.time.Clock()
@@ -27,30 +27,43 @@ except pygame.error:
 
 buttons = j.get_numbuttons()
 
-ChallengesPython = ["examples/GoStraightBlinkt.py", "GoStraightWith2_4.py", 
-					"examples/LineBlinkt.py", "2QTR1A_LineFollowing.py", 
-					"examples/MazeBlinkt.py", "Maze.py", 
-					"examples/PiNoonBlinkt.py", "PS4controller.py", 
-					"examples/SkittlesBlinkt.py", "ArmRC.py"]
+ChallengesPython = [ "GoStraightWith2_4.py","2QTR1A_LineFollowing.py", "maze.py", "PS4controller.py", "ArmRC.py"]
 ChallengeCounter = 0
 
 gianopirobot = GianoPi.GianoPi()
+spacing = 360.0 / 16.0
+hue = 0
 
-while 1:
-    for e in pygame.event.get(): # iterate over event stack
-		if e.type == pygame.locals.JOYBUTTONDOWN: # 10
-			if (j.get_button(13) == 1) : # central pad pressed once - trigger a blinkt light
+set_clear_on_exit()
+set_brightness(0.1)
+flag = True
+
+while (flag):
+  for e in pygame.event.get(): # iterate over event stack
+
+    if e.type == pygame.locals.JOYBUTTONDOWN: # 10
+
+      if (j.get_button(13) == 1) : # central pad pressed once - trigger a blinkt blue light on the robot- to be added
 				#print 'event : ' + str(e.type) + ' button ' +str(i) +' down : '+ str(j.get_button(i))
-				execfile(ChallengesPython(ChallengeCounter))
-      		 	ChallengeCounter = ChallengeCounter + 1
-      		 	if(ChallengeCounter == 9):
-      		 		ChallengeCounter = 0 #  the number of Challenges is 5!
+        execfile(ChallengesPython(ChallengeCounter))
+        ChallengeCounter = ChallengeCounter + 1
+        if(ChallengeCounter == 5):
+          ChallengeCounter = 0 #  the number of Challenges is 5!
       		 
-      		 elif(j.get_numbuttons(12)): # PS logo central button pressed
-      		 	execfile("../Pimoroni/blinkt/examples/rainbow.py &")
-      		 	gianopirobot.stop()
+      elif(j.get_button(12)): # PS logo central button pressed
+        gianopirobot.stop()
+        flag = False
 
-      		 elif(j.get_numbuttons(9)):
-      		 	execfile("../Pimoroni/blinkt/examples/larsen.py &")
+      elif(j.get_button(9)):
+        for t in range (5):
+          hue = int(time.time() * 100) % 360
+          for x in range(8):
+            offset = x * spacing
+            h = ((hue + offset) % 360) / 360.0
+            r, g, b = [int(c*255) for c in colorsys.hsv_to_rgb(h, 1.0, 1.0)]
+            set_pixel(x,r,g,b)
+          show()
+          time.sleep(0.001)
 
-    fpsClock.tick(fps)
+
+  fpsClock.tick(fps)

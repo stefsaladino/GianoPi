@@ -39,7 +39,7 @@ gianopirobot = GianoPi.GianoPi()
 while 1:
     for e in pygame.event.get(): # iterate over event stack
 		if e.type == pygame.locals.JOYBUTTONDOWN: # 10
-			if (j.get_button(13) == 1) : # central pad pressed once
+			if (j.get_button(13) == 1) : # central pad pressed once - trigger a blinkt light
 				#print 'event : ' + str(e.type) + ' button ' +str(i) +' down : '+ str(j.get_button(i))
 				execfile(ChallengesPython(ChallengeCounter))
       		 	ChallengeCounter = ChallengeCounter + 1
@@ -47,10 +47,10 @@ while 1:
       		 		ChallengeCounter = 0 #  the number of Challenges is 5!
       		 
       		 elif(j.get_numbuttons(12)): # PS logo central button pressed
-      		 	execfile("../Pimoroni/blinkt/examples/rainbow.py")
+      		 	execfile("../Pimoroni/blinkt/examples/rainbow.py &")
       		 	gianopirobot.stop()
 
       		 elif(j.get_numbuttons(9)):
-      		 	execfile("../Pimoroni/blinkt/examples/larsen.py")
+      		 	execfile("../Pimoroni/blinkt/examples/larsen.py &")
 
     fpsClock.tick(fps)

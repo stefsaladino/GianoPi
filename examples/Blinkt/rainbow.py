@@ -12,6 +12,7 @@ hue = 0
 set_clear_on_exit()
 set_brightness(0.1)
 
+for i in range (60000):
 
     hue = int(time.time() * 100) % 360
     for x in range(8):
@@ -19,5 +20,5 @@ set_brightness(0.1)
         h = ((hue + offset) % 360) / 360.0
         r, g, b = [int(c*255) for c in colorsys.hsv_to_rgb(h, 1.0, 1.0)]
         set_pixel(x,r,g,b)
-    show()
-    time.sleep(10)
+	show()
+    time.sleep(0.001)

@@ -114,7 +114,7 @@ class GianoPi(object):
             time.sleep(seconds)
             self.stop()
 
-    def backward(self, speed, seconds=None):
+    def backward(self, speed2, speed4, seconds=None):
         """Move backward at the specified speed (0-255).  Will start moving
         backward and return unless a seconds value is specified, in which
         case the robot will move backward for that amount of time and then stop.
@@ -137,8 +137,8 @@ class GianoPi(object):
         # Set motor speed and move both forward.
         self._m1_speed(speed1)
         self._m3_speed(speed3)
-        self._m1.run(Adafruit_MotorHAT.FORWARD)
-        self._m3.run(Adafruit_MotorHAT.BACKWARD)
+        self._m1.run(Adafruit_MotorHAT.BACKWARD)
+        self._m3.run(Adafruit_MotorHAT.FORWARD)
         # If an amount of time is specified, move for that time and then stop.
         if seconds is not None:
             time.sleep(seconds)
@@ -152,8 +152,8 @@ class GianoPi(object):
         # Set motor speed and move both forward.
         self._m1_speed(speed1)
         self._m3_speed(speed3)
-        self._m1.run(Adafruit_MotorHAT.BACKWARD)
-        self._m3.run(Adafruit_MotorHAT.FORWARD)
+        self._m1.run(Adafruit_MotorHAT.FORWARD)
+        self._m3.run(Adafruit_MotorHAT.BACKWARD)
         # If an amount of time is specified, move for that time and then stop.
         if seconds is not None:
             time.sleep(seconds)
@@ -441,8 +441,27 @@ class GianoPi(object):
         
         return ground_sensors
 
+    def turnrightall(self, speed, seconds=None):
+        """Spin to the left at the specified speed using all motors.  Will start spinning and
+        return unless a seconds value is specified, in which case the robot will
+        spin for that amount of time and then stop.
+        """
+        # Set motor speed and move both forward.
+        self._m2_speed(speed)
+        self._m1_speed(speed)
+        self._m4_speed(speed)
+        self._m3_speed(speed)
+        self._m2.run(Adafruit_MotorHAT.BACKWARD)
+        self._m1.run(Adafruit_MotorHAT.BACKWARD)
+        self._m4.run(Adafruit_MotorHAT.BACKWARD)
+        self._m3.run(Adafruit_MotorHAT.BACKWARD)
+        # If an amount of time is specified, move for that time and then stop.
+        if seconds is not None:
+            time.sleep(seconds)
+            self.stop()
+      
     def turnleftall(self, speed, seconds=None):
-        """Spin to the left at the specified speed using m2 and m4.  Will start spinning and
+        """Spin to the left at the specified speed using all motors.  Will start spinning and
         return unless a seconds value is specified, in which case the robot will
         spin for that amount of time and then stop.
         """
